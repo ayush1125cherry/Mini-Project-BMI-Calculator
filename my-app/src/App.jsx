@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
+import "./App.css";
 
 
 function App() {
@@ -11,7 +12,31 @@ function App() {
   const [message,setMessage] = useState('');
 
   // Logic...................
-    
+const calBmi = (e) => {
+  e.preventDefault();
+
+  if (weight <= 0 || height <= 0) {
+    alert("Enter valid weight and height");
+    return;
+  }
+
+  const bmiValue = weight / ((height / 100) * (height / 100));
+  setBmi(bmiValue.toFixed(1));
+
+  if (bmiValue < 18.5) {
+    setMessage("Underweight");
+  } else if (bmiValue >= 18.5 && bmiValue < 25) {
+    setMessage("Normal weight");
+  } else if (bmiValue >= 25 && bmiValue < 30) {
+    setMessage("Overweight");
+  } else {
+    setMessage("Obese");
+  }
+};
+
+  const reload = () =>{
+    window.location.reload()
+  }
 
 
 
@@ -25,20 +50,20 @@ function App() {
   return (
     <div className="container">
       <h2>BMI CALCULATOR</h2>
-      <form>
+      <form onSubmit={calBmi}>
         <div>
-          <label>Weight (lbs)</label>
+          <label>Weight (Kg)</label>
           <input type="text" 
           placeholder="Enter Your Weight" 
           value={weight} 
-          onChange={(e) => setWeight=(e.target.value)}/>
+          onChange={(e) => setWeight(e.target.value)}/>
         </div>
         <div>
-          <label>Height(in)</label>
+          <label>Height(cm)</label>
           <input type="text"
            placeholder="Enter Your height"
            value={height} 
-           onChange={(e) => setHeight=(e.target.value)}/>
+           onChange={(e) => setHeight(e.target.value)}/>
           </div>
         <div>
           <button className="btn" type="submit">
@@ -48,7 +73,7 @@ function App() {
             Reload
           </button>
         </div>
-        <div className="center">
+        <div className={`center ${message}`}>
           <h3>Your BMI is:{bmi}</h3>
           <p>{message}</p>
         </div>
